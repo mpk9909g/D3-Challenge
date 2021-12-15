@@ -29,6 +29,7 @@ let chartGroup = svg.append("g")
 
 // Initial Params
 var chosenXAxis = "poverty";
+//var chosenYAxis = "healthcare";
 
 // function used for updating x-scale var upon click on axis label
 function xScale(lifeData, chosenXAxis) {
@@ -127,7 +128,7 @@ d3.csv("./assets/data/data.csv").then(function(lifeData, err) {
     d.smokes = +d.smokes;
     d.poverty = +d.poverty;
     d.healthcare = +d.healthcare;
-    //d.lacksHealthcare = 100-d.healthcare;
+
   });
 
  // console.log("lifeData:");
@@ -171,7 +172,7 @@ d3.csv("./assets/data/data.csv").then(function(lifeData, err) {
     .data(lifeData)
     .enter()
     .append("text")
-    .attr("x", d => xLinearScale(d.poverty))
+    .attr("x", d => xLinearScale(d[chosenXAxis]))
     .attr("y", d => yLinearScale(d.healthcare))
     .text(d => d.abbr)
     .attr("font-size", "10px")
