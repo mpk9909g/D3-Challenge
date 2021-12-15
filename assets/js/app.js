@@ -88,7 +88,7 @@ function updateToolTip(chosenXAxis, circlesGroup) {
     label = "In Poverty (%)";
   }
   else if (chosenXAxis === "income") {
-    label = "Household Income Median"
+    label = "Household Income (Median)"
   }
   else {
     label = "Age (Median)";
@@ -198,6 +198,13 @@ d3.csv("./assets/data/data.csv").then(function(lifeData, err) {
     .classed("inactive", true)
     .text("Age (Median)");
 
+  let incomeLabel = labelsGroup.append("text")
+  .attr("x", 0)
+  .attr("y", 60)
+  .attr("value", "income") // value to grab for event listener
+  .classed("inactive", true)
+  .text("Household Income (Median)");
+
   // append y axis title
   chartGroup.append("text")
   .attr("transform", "rotate(-90)")
@@ -246,6 +253,21 @@ d3.csv("./assets/data/data.csv").then(function(lifeData, err) {
           povertyLabel
             .classed("active", false)
             .classed("inactive", true);
+          incomeLabel
+            .classed("active", false)
+            .classed("inactive", true);
+
+        }
+        else if (chosenXAxis === "income") {
+          ageLabel
+            .classed("active", false)
+            .classed("inactive", true);
+          povertyLabel
+            .classed("active", false)
+            .classed("inactive", true);
+          incomeLabel
+            .classed("active", true)
+            .classed("inactive", false);
         }
         else {
           ageLabel
@@ -254,6 +276,9 @@ d3.csv("./assets/data/data.csv").then(function(lifeData, err) {
           povertyLabel
             .classed("active", true)
             .classed("inactive", false);
+          incomeLabel
+            .classed("active", false)
+            .classed("inactive", true);
         }
       }
     });
