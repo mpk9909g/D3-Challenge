@@ -36,7 +36,6 @@ function xScale(lifeData, chosenXAxis) {
   // create scales
   var xLinearScale = d3.scaleLinear()
     .domain([d3.min(lifeData, d => d[chosenXAxis]) * 0.95,  //does the scaling based on the chosen X axis
-    //.domain([0,  //does the scaling based on the chosen X axis
       d3.max(lifeData, d => d[chosenXAxis]) * 1.05
     ])
     .range([0, chartWidth]);
@@ -49,12 +48,8 @@ function xScale(lifeData, chosenXAxis) {
 function yScale(lifeData, chosenYAxis) {
   // create scales
   var yLinearScale = d3.scaleLinear()
-    .domain([0,  //does the scaling based on the chosen X axis
-    //.domain([0,  //does the scaling based on the chosen X axis
-      d3.max(lifeData, d => d[chosenYAxis]) * 1.05
-    ])
+    .domain([0,d3.max(lifeData, d => d[chosenYAxis]) * 1.05])
     .range([chartHeight, 0]);
-
   return yLinearScale;
 
 }
@@ -71,12 +66,12 @@ function renderXAxis(newXScale, xAxis) {
 }
 
 // function used for updating yAxis var upon click on axis label
-function renderYAxes(newYScale, yAxis) {
-  var leftAxis = d3.axisBottom(newYScale);
+function renderYAxis(newYScale, yAxis) {
+  var leftAxis = d3.axisLeft(newYScale);
 
   yAxis.transition()
     .duration(1000)
-    .call(bottomAxis);
+    .call(leftAxis);
 
   return yAxis;
 }
@@ -154,21 +149,15 @@ d3.csv("./assets/data/data.csv").then(function(lifeData, err) {
 
   });
 
- // console.log("lifeData:");
- // console.log(lifeData);
 
-  // Configure a linear scale for the horizontal axis
+  // Configure a linear scale for the horizontal and vertical axis
   let xLinearScale = xScale(lifeData, chosenXAxis);
   let yLinearScale = yScale(lifeData, chosenYAxis);
-  // Create a linear scale for the vertical axis.
 
-  // let yLinearScale = d3.scaleLinear()
-  //   .domain([0, d3.max(lifeData, d => d.healthcare)+2])
-  //   .range([chartHeight, 0]);
 
   // Create initial axis functions
-  let bottomAxis = d3.axisBottom(xLinearScale);
-  let leftAxis = d3.axisLeft(yLinearScale); 
+  var bottomAxis = d3.axisBottom(xLinearScale);
+  var leftAxis = d3.axisLeft(yLinearScale); 
 
   // append x axis
   var xAxis = chartGroup.append("g")
@@ -254,6 +243,8 @@ d3.csv("./assets/data/data.csv").then(function(lifeData, err) {
   // updateToolTip function above csv import
   var circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
 
+
+
   // x axis labels event listener
   labelsGroupX.selectAll("text")
     .on("click", function() {
@@ -270,9 +261,8 @@ d3.csv("./assets/data/data.csv").then(function(lifeData, err) {
         // updates x scale for new data
         xLinearScale = xScale(lifeData, chosenXAxis);
 
-        // updates x and y axis with transition
+        // updates x axis with transition
         xAxis = renderXAxis(xLinearScale, xAxis);
-        //yAxis = renderYAxis(yLinearScale, yAxis);
 
         // updates circles with new x values
         circlesGroup = renderXCircles(circlesGroup, xLinearScale, chosenXAxis);
@@ -346,16 +336,16 @@ d3.csv("./assets/data/data.csv").then(function(lifeData, err) {
 
         // functions here found above csv import
         // updates x scale for new data
-        yLinearScale = xScale(lifeData, chosenYAxis);
+        yLinearScale = yScale(lifeData, chosenYAxis);
 
-        // updates x and y axis with transition
-        yAxis = renderXAxis(yLinearScale, yAxis);
-        //yAxis = renderYAxis(yLinearScale, yAxis);
+        // updates y axis with transition
+        yAxis = renderYAxis(yLinearScale, yAxis);
 
-        // updates circles with new x values
+
+        // updates circles with new y values
         circlesGroup = renderCircles(circlesGroup, yLinearScale, chosenYAxis);
 
-        // updates circle labels with new x values
+        // updates circle labels with new y values
         stateInitials = renderCircleLabels(stateInitials, yLinearScale, chosenYAxis);
 
         // updates tooltips with new info
