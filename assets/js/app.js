@@ -1,3 +1,4 @@
+
 // @TODO: YOUR CODE HERE!
 console.log("d3 challenge app.js file is loaded");
 
@@ -382,9 +383,3 @@ d3.csv("./assets/data/data.csv").then(function(lifeData, err) {
 
     
 });
-
-
-
-  
-
-console.log("let's make it mac tonight");
