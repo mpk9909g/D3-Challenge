@@ -77,7 +77,7 @@ function renderYAxis(newYScale, yAxis) {
   return yAxis;
 }
 
-// function used for updating circles group with a transition to
+// function used for updating X circles group with a transition to
 // new circles
 function renderXCircles(circlesGroup, newXScale, chosenXAxis) {
 
@@ -97,6 +97,28 @@ function renderXCircleLabels(stateInitials, newXScale, chosenXAxis) {
 
   return stateInitials;
 }
+
+// function used for updating Y circles group with a transition to
+// new circles
+function renderYCircles(circlesGroup, newYScale, chosenXAxis) {
+
+  circlesGroup.transition()
+    .duration(1000)
+    .attr("cy", d => newYScale(d[chosenYAxis]));
+
+  return circlesGroup;
+}
+
+// function used for updating circle labels with x transition
+function renderYCircleLabels(stateInitials, newYScale, chosenXAxis) {
+
+  stateInitials.transition()
+    .duration(1200)
+    .attr("y", d => newYScale(d[chosenYAxis]));
+
+  return stateInitials;
+}
+
 
 
 // function used for updating circles group with new tooltip
@@ -246,7 +268,7 @@ d3.csv("./assets/data/data.csv").then(function(lifeData, err) {
 
 
 
-  // x axis labels event listener
+  // X axis labels event listener
   labelsGroupX.selectAll("text")
     .on("click", function() {
       // get value of selection
@@ -323,7 +345,7 @@ d3.csv("./assets/data/data.csv").then(function(lifeData, err) {
 
 
 
-  // y axis labels event listener
+  // Y axis labels event listener
   labelsGroupY.selectAll("text")
     .on("click", function() {
       // get value of selection
@@ -344,10 +366,10 @@ d3.csv("./assets/data/data.csv").then(function(lifeData, err) {
 
 
         // updates circles with new y values
-        circlesGroup = renderCircles(circlesGroup, yLinearScale, chosenYAxis);
+        circlesGroup = renderYCircles(circlesGroup, yLinearScale, chosenYAxis);
 
         // updates circle labels with new y values
-        stateInitials = renderCircleLabels(stateInitials, yLinearScale, chosenYAxis);
+        stateInitials = renderYCircleLabels(stateInitials, yLinearScale, chosenYAxis);
 
         // updates tooltips with new info
         circlesGroup = updateToolTip(chosenYAxis, circlesGroup);
