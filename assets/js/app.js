@@ -334,74 +334,59 @@ d3.csv("./assets/data/data.csv").then(function(lifeData, err) {
       }
     }); //.on(click)
 
-  }).catch(function(error) {
-    console.log(error);  
-
-
-
-
-
-
-
-
-
-  // Y axis labels event listener
+      // Y axis labels event listener
   labelsGroupY.selectAll("text")
-    .on("click", function() {
-      // get value of selection
-      var value = d3.select(this).attr("value");
-      if (value !== chosenYAxis) {
+  .on("click", function() {
+    // get value of selection
+    var value = d3.select(this).attr("value");
+    if (value !== chosenYAxis) {
 
-        // replaces chosenXAxis with value
-        chosenYAxis = value;
+      // replaces chosenXAxis with value
+      chosenYAxis = value;
 
-        // console.log(chosenXAxis)
+      // console.log(chosenXAxis)
 
-        // functions here found above csv import
-        // updates x scale for new data
-        yLinearScale = yScale(lifeData, chosenYAxis);
+      // functions here found above csv import
+      // updates x scale for new data
+      yLinearScale = yScale(lifeData, chosenYAxis);
 
-        // updates y axis with transition
-        yAxis = renderYAxis(yLinearScale, yAxis);
-
-
-        // updates circles with new y values
-        circlesGroup = renderYCircles(circlesGroup, yLinearScale, chosenYAxis);
-
-        // updates circle labels with new y values
-        stateInitials = renderYCircleLabels(stateInitials, yLinearScale, chosenYAxis);
-
-        // updates tooltips with new info
-        circlesGroup = updateToolTip(chosenYAxis, circlesGroup);
-
-        // changes classes to change bold text
-        if (chosenYAxis === "obesity") {
-          obeseLabel
-            .classed("active", true)
-            .classed("inactive", false);
-          healthcareLabel
-            .classed("active", false)
-            .classed("inactive", true);
+      // updates y axis with transition
+      yAxis = renderYAxis(yLinearScale, yAxis);
 
 
-        }
-        else {
-          obeseLabel
-            .classed("active", false)
-            .classed("inactive", true);
-          healthcareLabel
-            .classed("active", true)
-            .classed("inactive", false);
+      // updates circles with new y values
+      circlesGroup = renderYCircles(circlesGroup, yLinearScale, chosenYAxis);
 
-        }
+      // updates circle labels with new y values
+      stateInitials = renderYCircleLabels(stateInitials, yLinearScale, chosenYAxis);
+
+      // updates tooltips with new info
+      circlesGroup = updateToolTip(chosenYAxis, circlesGroup);
+
+      // changes classes to change bold text
+      if (chosenYAxis === "obesity") {
+        obeseLabel
+          .classed("active", true)
+          .classed("inactive", false);
+        healthcareLabel
+          .classed("active", false)
+          .classed("inactive", true);
+
+
       }
-    }); //.on(click)
+      else {
+        obeseLabel
+          .classed("active", false)
+          .classed("inactive", true);
+        healthcareLabel
+          .classed("active", true)
+          .classed("inactive", false);
+
+      }
+    }
+  }); //.on(click)
+
 
   }).catch(function(error) {
-    console.log(error);  
-
-
-
-
-    
+    console.log(error);      
 });
